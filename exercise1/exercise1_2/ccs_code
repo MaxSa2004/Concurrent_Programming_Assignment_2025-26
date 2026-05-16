@@ -1,0 +1,7 @@
+UserA := acquireLockA!.acquireLockB!.sendAToB!.releaseLockB!.releaseLockA!.UserA
+UserB := acquireLockA!.acquireLockB!.sendBToA!.releaseLockB!.releaseLockA!.UserB 
+
+LockA := acquireLockA?.releaseLockA?.LockA
+LockB := acquireLockB?.releaseLockB?.LockB
+
+(UserA|UserB|LockA|LockB)\{acquireLockA,releaseLockA,acquireLockB,releaseLockB}

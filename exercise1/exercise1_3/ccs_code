@@ -1,0 +1,9 @@
+UserZ := acquireLockZ!.acquireLockH!.sendZToH!.releaseLockH!.releaseLockZ!.UserZ
+UserH := acquireLockH!.acquireLockE!.sendHToE!.releaseLockE!.releaseLockH!.UserH
+UserE := acquireLockE!.(acquireLockH!.sendEToH!.releaseLockH!.releaseLockE!.UserE + acquireLockZ!.sendEToZ!.releaseLockZ!.releaseLockE!.UserE)
+
+LockZ := acquireLockZ?.releaseLockZ?.LockZ
+LockH := acquireLockH?.releaseLockH?.LockH
+LockE := acquireLockE?.releaseLockE?.LockE
+
+(UserZ|UserH|UserE|LockZ|LockH|LockE)\{acquireLockZ,releaseLockZ,acquireLockH,releaseLockH,acquireLockE,releaseLockE}
