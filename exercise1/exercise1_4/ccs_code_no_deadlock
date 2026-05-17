@@ -1,3 +1,5 @@
+// exercise 1.4
+
 Send[x,y] := when(x<y)acquireLock!x.acquireLock!y.send!x.receive!y.releaseLock!y.releaseLock!x.Send[x,y] + when(x>y)acquireLock!y.acquireLock!x.send!x.receive!y.releaseLock!x.releaseLock!y.Send[x,y] 
 Lock[x] := acquireLock?x.releaseLock?x.Lock[x]
 
