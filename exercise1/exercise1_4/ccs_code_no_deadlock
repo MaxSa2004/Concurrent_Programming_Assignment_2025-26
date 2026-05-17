@@ -1,0 +1,4 @@
+Send[x,y] := when(x<y)acquireLock!x.acquireLock!y.send!x.receive!y.releaseLock!y.releaseLock!x.Send[x,y] + when(y>x)acquireLock!y.acquireLock!x.send!x.receive!y.releaseLock!x.releaseLock!y.Send[x,y] 
+Lock[x] := acquireLock?x.releaseLock?x.Lock[x]
+
+(Send[0,1]|Send[0,2]|Send[1,0]|Send[1,2]|Send[2,0]|Send[2,1]|Lock[0]|Lock[1]|Lock[2])\{acquireLock,releaseLock}
