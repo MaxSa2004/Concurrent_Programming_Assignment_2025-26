@@ -1,3 +1,5 @@
+// exercise 1.3
+
 UserZ := acquireLockZ!.acquireLockH!.sendZToH!.releaseLockH!.releaseLockZ!.UserZ
 UserH := acquireLockH!.acquireLockE!.sendHToE!.releaseLockE!.releaseLockH!.UserH
 UserE := acquireLockE!.(acquireLockH!.sendEToH!.releaseLockH!.releaseLockE!.UserE + acquireLockZ!.sendEToZ!.releaseLockZ!.releaseLockE!.UserE)

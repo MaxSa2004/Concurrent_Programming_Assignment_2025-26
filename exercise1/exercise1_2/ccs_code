@@ -1,3 +1,5 @@
+// exercise 1.2
+
 UserA := acquireLockA!.acquireLockB!.sendAToB!.releaseLockB!.releaseLockA!.UserA
 UserB := acquireLockA!.acquireLockB!.sendBToA!.releaseLockB!.releaseLockA!.UserB 
 
