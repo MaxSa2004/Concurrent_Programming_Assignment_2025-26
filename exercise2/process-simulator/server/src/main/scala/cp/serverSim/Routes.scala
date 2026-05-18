@@ -5,10 +5,19 @@ import org.http4s._
 import org.http4s.dsl.io._
 import org.slf4j.LoggerFactory
 
+import scala.concurrent._
+import java.util.concurrent.ForkJoinPool
+
 object Routes {
   // Logger object, printing to the file logs/logs.txt
   private val logger = LoggerFactory.getLogger(getClass)
   private val state = new ServerState()
+
+  //
+  val num_cores: Int = Runtime.getRuntime().availableProcessors()
+  val pool = new forkjoin.ForkJoinPool(num_cores)
+  val ectx = ExecutionContext.fromExecutorService(pool)
+  //
 
   val routes: IO[HttpRoutes[IO]] =
    IO{HttpRoutes.of[IO] {
@@ -21,7 +30,8 @@ object Routes {
 
      // React to a "reset" request
     case GET -> Root / "reset" =>
-      state.counter = 0
+      state.counter.getAndSet(0)
+      //state.counter = 0
       Ok("State reset!")
         .map(addCORSHeaders)
 
@@ -59,15 +69,31 @@ object Routes {
     * @return a string confirming the received command and user IP, which will be sent back to the client as a response
     */
   private def runProcess(cmd: String, userIp: String): String = {
-    state.counter += 1
-    val cnt = state.counter
+    val cnt = state.counter.incrementAndGet()
+    //state.counter += 1
+    //val cnt = state.counter
+    
     val cmds = cmd.split(";").map(_.trim).filter(_.nonEmpty)
     // Printing the received command and user IP to the logs
     logger.info(s"🔹 Starting processes (${cnt}) for user $userIp:" +
       s"${cmds.map("\n - "+_).mkString}")
 
     // TODO:Run process here. The `Thread.sleep` should be removed.
-    Thread.sleep(500)
+    //
+    for (cmd <- cmds) {
+      val delay: Option[Int] = 1
+      ectx.execute(new Runnable {
+        def run() = {
+          delay match {
+            case Some(n) =>
+              Thread.sleep(delay*1000)
+            case None =>
+          }
+        }
+      })
+    }
+    //
+
     val output: String = s"[${cnt}] Received request from $userIp: ${cmds.mkString(" | ")}"
 
     output
