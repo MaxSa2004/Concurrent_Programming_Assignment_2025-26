@@ -7,9 +7,10 @@ class ServerState() {
 
   var counter = new AtomicInteger();
   //var counter = 0;
-
-  def toHtml: String =
+  
+  def toHtml: String = {
     s"<p><strong>counter:</strong> ${counter.get()}</p>"
+  }
   //def toHtml: String =
   // s"<p><strong>counter:</strong> $counter</p>"
 }

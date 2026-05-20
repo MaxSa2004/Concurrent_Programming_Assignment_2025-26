@@ -5,19 +5,25 @@ import org.http4s._
 import org.http4s.dsl.io._
 import org.slf4j.LoggerFactory
 
+import java.time.LocalDateTime
+
+/*
 import scala.concurrent._
 import java.util.concurrent.ForkJoinPool
+*/
 
 object Routes {
   // Logger object, printing to the file logs/logs.txt
   private val logger = LoggerFactory.getLogger(getClass)
   private val state = new ServerState()
 
-  //
-  val num_cores: Int = Runtime.getRuntime().availableProcessors()
+  //val num_cores: Int = Runtime.getRuntime().availableProcessors()
+  val thread_pool: ThreadPool = new ThreadPool(4)
+  /*
+  Thread Pool using ExecutionContext
   val pool = new forkjoin.ForkJoinPool(num_cores)
   val ectx = ExecutionContext.fromExecutorService(pool)
-  //
+  */
 
   val routes: IO[HttpRoutes[IO]] =
    IO{HttpRoutes.of[IO] {
@@ -79,20 +85,15 @@ object Routes {
       s"${cmds.map("\n - "+_).mkString}")
 
     // TODO:Run process here. The `Thread.sleep` should be removed.
-    //
+
     for (cmd <- cmds) {
-      val delay: Option[Int] = 1
-      ectx.execute(new Runnable {
-        def run() = {
-          delay match {
-            case Some(n) =>
-              Thread.sleep(delay*1000)
-            case None =>
-          }
-        }
+      val delay: Int = 1000
+      thread_pool.execute({
+        Thread.sleep(delay)
+        //println(s"${Thread.currentThread.getName}: $cmd ${LocalDateTime.now()}")
+        val str_print =  s"$instr Time: ${LocalDateTime.now()}" 
       })
     }
-    //
 
     val output: String = s"[${cnt}] Received request from $userIp: ${cmds.mkString(" | ")}"
 

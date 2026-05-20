@@ -16,9 +16,9 @@ object TicketOfficeTest extends App {
         tickets += n
       case Buy(n) =>
         if (tickets < n) 
-          log.info(s"Could not provide $n tickets, only $tickets available")
+          log.info(s"Could not provide $n tickets, only $tickets available.")
         else tickets -= n
-      case msg =>
+      case "Bye" =>
         log.info(s"Main office terminated with $tickets tickets!")
         context.stop(self)
     }
