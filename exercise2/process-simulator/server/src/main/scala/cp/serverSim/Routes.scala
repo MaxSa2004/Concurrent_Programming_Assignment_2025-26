@@ -91,7 +91,7 @@ object Routes {
       thread_pool.execute({
         Thread.sleep(delay)
         //println(s"${Thread.currentThread.getName}: $cmd ${LocalDateTime.now()}")
-        val str_print =  s"$instr Time: ${LocalDateTime.now()}" 
+        //val str_print =  s"$instr Time: ${LocalDateTime.now()}" 
       })
     }
 
