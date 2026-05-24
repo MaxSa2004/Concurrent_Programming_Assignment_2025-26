@@ -1,0 +1,17 @@
+server: localhost:8080
+print "A" @ 1
+print "B" @ 1
+print "C" @ 1
+print "D" @ 1
+print "E" @ 1
+print "F" @ 1
+print "G" @ 1
+print "H" @ 1
+print "I" @ 1
+print "J" @ 1
+print "K" @ 1
+print "L" @ 1
+print "M" @ 1
+print "N" @ 1
+print "O" @ 1
+print "P" @ 1

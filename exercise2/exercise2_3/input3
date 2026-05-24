@@ -1,0 +1,7 @@
+server: localhost:8080
+print "1 slow (4s)" @ 4
+print "2 fast (1s)" @ 1
+print "3 from fast (1s)" @ 0 after 2
+print "4 from slow (4s)" @ 0 after 1
+print "5 final (from 3 and 4)" @ 0 after 3,4
+

@@ -1,0 +1,4 @@
+server: localhost:8080
+print "hello, i am pedro" @ 3 after 3
+print "sup, i am bob" after 1,3
+print "hi, i am max" @ 1 
