@@ -23,6 +23,9 @@ object Routes {
   private val logger = LoggerFactory.getLogger(getClass)
   private val state = new ServerState()
 
+  // ex2.4 
+  @volatile private var paused: Boolean = false
+
   //val num_cores: Int = Runtime.getRuntime().availableProcessors()
   val thread_pool: ThreadPool = new ThreadPool(4)
   /*
@@ -69,6 +72,15 @@ object Routes {
            BadRequest("⚠️ Command not provided. Use /run-simulation?cmd=<your_commands>")
              .map(addCORSHeaders)
        }
+
+      // ex2.4
+      case GET -> Root / "pause" =>
+        paused = true
+        Ok("SERVER PAUSED").map(addCORSHeaders)
+      
+      case GET -> Root / "resume" =>
+        paused = false
+        Ok("SERVER RESUMED").map(addCORSHeaders)
    }}
 
 
@@ -143,6 +155,13 @@ object Routes {
       val instruct = parsedInstr(i)
 
       thread_pool.execute {
+        // ex2.4 - while server is paused instructions in execution wait until resumed
+        // enter http://localhost:8080/pause in browser to pause
+        // enter http://localhost:8080/resume in browser to resume
+        while (paused){
+          Thread.sleep(1)
+        }
+
         if (instruct.delay > 0){
           Thread.sleep(instruct.delay)
         }
