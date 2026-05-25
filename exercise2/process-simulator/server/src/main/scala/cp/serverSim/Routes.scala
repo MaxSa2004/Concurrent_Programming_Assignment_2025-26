@@ -16,7 +16,7 @@ import java.util.concurrent.ForkJoinPool
 */
 
 // class to store full parsed instruction
-private case class Instr(instruction: String, delay: Int, afterDependencies: List[Int])
+private case class Instr(output: String, delay: Int, afterDependencies: List[Int])
 
 object Routes {
   // Logger object, printing to the file logs/logs.txt
@@ -167,7 +167,7 @@ object Routes {
         }
 
         val timestamp = LocalDateTime.now()
-        state.addResult(s"[${timestamp}] : ${instruct.instruction}")
+        state.addResult(s"[${timestamp}] : ${instruct.output}")
 
         // change done from false to true for this instruction and trigger
         if(done(i).compareAndSet(false, true)){
@@ -188,19 +188,6 @@ object Routes {
       }
     }
 
-
-    /*for (cmd <- cmds) {
-      val delay: Int = 1000
-      thread_pool.execute({
-        //Thread.sleep(delay)
-
-        parseIgnoreAfter(cmd)
-
-        //println(s"${Thread.currentThread.getName}: $cmd ${LocalDateTime.now()}")
-        //val str_print =  s"$instr Time: ${LocalDateTime.now()}" 
-      })
-    }*/
-
     val output: String = s"[${cnt}] Received request from $userIp: ${cmds.mkString(" | ")}"
 
     output
@@ -219,8 +206,9 @@ object Routes {
     // if no @ then it is 0 delay by default
     val delay = if (parts.length == 2 && parts(1).nonEmpty) parts(1).trim.toInt  else 0
 
+    val output = instruction.split("\"", 2)(1).split("\"", 2)(0)
     //println(s"${instruction} with delay: ${delay}")
-    (instruction, delay * 1000) // converting seconds to miliseconds for thread.sleep
+    (output, delay * 1000) // converting seconds to miliseconds for thread.sleep
   }
 
   // ex2.3 - extracting all values safely
@@ -242,8 +230,10 @@ object Routes {
     // if no @ then it is 0 delay by default
     val delay = if (atSplit.length == 2 && atSplit(1).nonEmpty) atSplit(1).trim.toInt  else 0
 
+    val output = instruction.split("\"", 2)(1).split("\"", 2)(0)
+
     // converted to seconds
-    Instr(instruction = instruction, delay = delay * 1000, afterDependencies = afterDependencies)
+    Instr(output = output, delay = delay * 1000, afterDependencies = afterDependencies)
   }
 
   /** Add extra headers, required by the client. */
