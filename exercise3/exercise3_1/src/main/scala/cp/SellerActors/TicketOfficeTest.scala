@@ -32,7 +32,7 @@ object TicketOfficeTest extends App {
   ticketOffice ! ToSell(2000)
   for (x <- 0 until 101) 
     ticketOffice ! Buy(20)
-  log("Tried to Buy many ${20*101} tickets.")
+  log(s"Tried to Buy many ${20*101} tickets.")
 
   ticketOffice ! ToSell(40)
   ticketOffice ! Buy(30)
