@@ -83,13 +83,15 @@ object TicketOfficeTest extends App {
   ticketOffice ! Buy(40)
   ticketOffice ! Buy(70)
 
+  Thread.sleep(500)
+
   ticketOffice ! ToSell(70)
   ticketOffice ! Buy(20)
   ticketOffice ! ToSell(50)
   ticketOffice ! Buy(20)
   ticketOffice ! Buy(15)
 
-  Thread.sleep(1000)
+  Thread.sleep(500)
 
   ticketOffice ! "Bye"
  
