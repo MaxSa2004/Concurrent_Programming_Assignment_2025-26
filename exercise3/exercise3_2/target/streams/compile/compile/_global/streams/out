@@ -1,7 +1,0 @@
-[0m[[0m[31merror[0m] [0m[0m/home/pedro/Desktop/Prog_Concurrente/Concurrent_Programming_Assignment_2025-26/exercise3/exercise3_2/src/main/scala/cp/SellerActors/TicketOfficeTest.scala:32:38: '<-' expected but ')' found.[0m
-[0m[[0m[31merror[0m] [0m[0m        for (child ! context.children) {[0m
-[0m[[0m[31merror[0m] [0m[0m                                     ^[0m
-[0m[[0m[31merror[0m] [0m[0m/home/pedro/Desktop/Prog_Concurrente/Concurrent_Programming_Assignment_2025-26/exercise3/exercise3_2/src/main/scala/cp/SellerActors/TicketOfficeTest.scala:50:5: illegal start of simple expression[0m
-[0m[[0m[31merror[0m] [0m[0m    }[0m
-[0m[[0m[31merror[0m] [0m[0m    ^[0m
-[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m

@@ -1,7 +1,0 @@
-[0m[[0m[31merror[0m] [0m[0m/home/pedro/Desktop/Prog_Concurrente/Concurrent_Programming_Assignment_2025-26/exercise3/exercise3_1/src/main/scala/cp/SellerActors/TicketOfficeTest.scala:33:3: 'while' expected but identifier found.[0m
-[0m[[0m[31merror[0m] [0m[0m  log("Tried to Buy many ${20*101} tickets.")[0m
-[0m[[0m[31merror[0m] [0m[0m  ^[0m
-[0m[[0m[31merror[0m] [0m[0m/home/pedro/Desktop/Prog_Concurrente/Concurrent_Programming_Assignment_2025-26/exercise3/exercise3_1/src/main/scala/cp/SellerActors/TicketOfficeTest.scala:34:1: '(' expected.[0m
-[0m[[0m[31merror[0m] [0m[0m  ticketOffice ! "Bye"[0m
-[0m[[0m[31merror[0m] [0m[0m^[0m
-[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m
