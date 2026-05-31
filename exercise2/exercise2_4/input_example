@@ -1,5 +1,5 @@
 server: localhost:8080
-print "A" @ 5
-print "B" @ 5
+print "A" @ 30
+print "B" @ 5 after 1
 print "C" @ 5
 print "D" @ 5
