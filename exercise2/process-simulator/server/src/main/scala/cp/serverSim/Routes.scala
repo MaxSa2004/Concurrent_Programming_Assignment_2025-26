@@ -6,14 +6,9 @@ import org.http4s.dsl.io._
 import org.slf4j.LoggerFactory
 
 import java.time.LocalDateTime
-import java.time.LocalDateTime
 
 import java.util.concurrent.atomic._
 
-/*
-import scala.concurrent._
-import java.util.concurrent.ForkJoinPool
-*/
 
 // class to store full parsed instruction
 private case class Instr(output: String, delay: Int, afterDependencies: List[Int])
@@ -28,11 +23,6 @@ object Routes {
 
   //val num_cores: Int = Runtime.getRuntime().availableProcessors()
   val thread_pool: ThreadPool = new ThreadPool(4)
-  /*
-  Thread Pool using ExecutionContext
-  val pool = new forkjoin.ForkJoinPool(num_cores)
-  val ectx = ExecutionContext.fromExecutorService(pool)
-  */
 
   val routes: IO[HttpRoutes[IO]] =
    IO{HttpRoutes.of[IO] {
@@ -129,33 +119,33 @@ object Routes {
     // dependencies(d) = list of instructions that depend on instruction d
     val dependencies: Array[List[Int]] = Array.fill(parsedInstr.size)(Nil)
 
-    //  remainingCounts(i) = number of deps for instruction i
-    val remainingCounts: Array[Int] = Array.ofDim[Int](parsedInstr.size)
+    // remaining(i) = number of instruction to finish before i is ready to execute
+    val remaining: Array[AtomicInteger] = Array.ofDim[AtomicInteger](parsedInstr.size)
+
+    // no_deps_instr(i) = true if instr i has no dependencies initially, false otherwise
+    val no_deps_instr: Array[Boolean] = new Array[Boolean](parsedInstr.size)
 
     // init structures
     for(i <- parsedInstr.indices){
       val deps = parsedInstr(i).afterDependencies
-      remainingCounts(i) = deps.size
+      remaining(i) = new AtomicInteger(deps.size)
+      if (deps.size == 0) {
+        no_deps_instr(i) = true
+      }
       deps.foreach {
         d => dependencies(d) = i :: dependencies(d)
       }
     }
 
-    // atomic thread safe array of if instruction done or not
-    val done = Array.fill(parsedInstr.size)(new AtomicBoolean(false))
-    // atomic thread safe version of remaingCounts
-    val remaining = remainingCounts.map(n => new AtomicInteger(n))
-
     // schedules instruction i for when it becomes ready and when finished it atomically releases dependants
     // Logic: - remaining(x) is num of unfinished dependencies of instruction x... instruction ready iff remaining(x) == 0
-    //        - done(i) ensures that instruction i releases dependants (once only) by decrementing dependents count 
     //          for each dependent j and for each now-ready dependant j we execute it
     //        - the thread doing left == 0 is the one that makes instruction j ready & schedules it
     def executeInstruction(i: Int): Unit = {
       val instruct = parsedInstr(i)
 
       thread_pool.execute {
-        // ex2.4 - while server is paused instructions in execution wait until resumed
+        // ex2.4 - while server is paused, instructions in execution wait until resumed
         // enter http://localhost:8080/pause in browser to pause
         // enter http://localhost:8080/resume in browser to resume
         while (paused){
@@ -169,21 +159,19 @@ object Routes {
         val timestamp = LocalDateTime.now()
         state.addResult(s"[${timestamp}] : ${instruct.output}")
 
-        // change done from false to true for this instruction and trigger
-        if(done(i).compareAndSet(false, true)){
-          dependencies(i).foreach{j =>
-            val left = remaining(j).decrementAndGet()
-            if (left == 0){
-              executeInstruction(j)
-            }
+
+        dependencies(i).foreach{j =>
+          val left = remaining(j).decrementAndGet()
+          if (left == 0){
+            executeInstruction(j)
           }
         }
       }
     }
 
-    // start all ready instructions (where dependencies counter = 0)
+    // Initially, start executing all instructions that have no dependencies 
     parsedInstr.indices.foreach{ i =>
-      if (remaining(i).get() == 0){
+      if (no_deps_instr(i)) {
         executeInstruction(i)
       }
     }
