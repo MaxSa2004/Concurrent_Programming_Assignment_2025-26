@@ -1,0 +1,56 @@
+File structure:
+
+- /exercise 1
+	- /exercise 1.1
+		- ccs_code
+		- LTS_exercise_1_1.png
+	- /exercise 1.2
+		- ccs_code
+	- /exercise 1.3
+		- ccs_code
+	- /exercise 1.4 
+		- ccs_code
+		- ccs_code_no_deadlock
+	- readme.txt
+- /exercise 2
+	- /exercise 2.1
+		- example_input_failure
+		- output_no_atomic.png
+		- output_with_atomic.png
+	- /exercise 2.2
+		- example_input_fail_nonsafe_works_threadsafe
+		- input_working_with_threadsafe.png
+	- /exercise 2.3
+		- input1
+		- input2
+		- input3
+		- output1.png
+		- output2.png
+		- output3.png
+	- /exercise 2.4
+		- input_example
+	- /process-simulator
+		- /client
+			- /css
+			- /fonts
+			- /js
+			- index.html
+		- /server
+			- /project
+			- /src/main/scala/cp/serverSim
+				- Main.scala
+				- Routes.scala
+				- ServerState.scala
+				- ThreadPool.scala
+	- readme.txt
+- /exercise 3
+	- /exercise3_1
+			- /src/main/scala/cp/SellerActors
+				- package.scala
+				- TicketOfficeTest.scala
+	- /exercise3_2
+			- /src/main/scala/cp/SellerActors
+				- TicketOfficeTest.scala
+	- readme.txt
+
+Each readme.txt inside each exercise folder, contains information on how to run and compile each implementation.
